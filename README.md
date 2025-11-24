@@ -1,25 +1,65 @@
-# TMDB CLI Tool
+# 🎬 TMDB CLI - Movie Database Command Line Tool
 
-A PHP CLI tool to fetch movies from TMDB API using SOLID principles.
+A professional PHP command-line interface for The Movie Database (TMDB) API.
 
-## Setup
+## 🚀 Quick Start
 
-1. composer install
-2. Add TMDB_API_KEY to .env
-3. php tmdb-app --type popular
+```bash
+# Get popular movies
+php tmdb-app --type popular
 
-## Usage
+# Get now playing movies
+php tmdb-app --type playing
 
-php tmdb-app --type [playing|popular|top|upcoming]# TMDB CLI Tool
+# Get top rated movies
+php tmdb-app --type top
 
-A PHP CLI tool to fetch movies from TMDB API using SOLID principles.
+# Get upcoming movies
+php tmdb-app --type upcoming
+```
 
-## Setup
+##📦 Installation
 
-1. composer install
-2. Add TMDB_API_KEY to .env
-3. php tmdb-app --type popular
+# Clone repository
 
-## Usage
+git clone https://github.com/vasei-me/tmdb-cli.git
+cd tmdb-cli
 
-php tmdb-app --type [playing|popular|top|upcoming]
+# Install dependencies
+
+composer install
+
+# Configure environment (add your TMDB API key)
+
+echo "TMDB_API_KEY=your_api_key_here" > .env
+
+##🎯 Usage Examples
+
+# Basic movie queries
+
+php tmdb-app --type popular
+php tmdb-app --type playing
+php tmdb-app --type top
+php tmdb-app --type upcoming
+
+# Pagination support
+
+php tmdb-app --type popular --page 2
+
+# Development mode (mock data)
+
+php tmdb-app --type popular --mock
+
+##🛠️ Development
+
+# Run tests
+
+php tmdb-app --type popular --mock
+
+# Check logs
+
+tail -f logs/app.log
+
+# Clear cache
+
+rm -rf cache/
