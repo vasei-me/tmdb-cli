@@ -1,8 +1,9 @@
-````markdown
-# 🎬 TMDB CLI - Movie Database Command Line Tool
+## 🎬 TMDB CLI - Movie Database Command Line Tool
 
 A professional PHP command-line interface for The Movie Database (TMDB) API.
+![ghtrend demo](assets/demo.png)
 
+````markdown
 ## 🚀 Quick Start
 
 ```bash
