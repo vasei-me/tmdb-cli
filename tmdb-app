@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Dotenv\Dotenv;
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+function config(string $key = null) {
+    $config = require __DIR__ . '/config/config.php';
+    return $key ? ($config[$key] ?? null) : $config;
+}
+
+use App\Output\CliHandler;
+use App\Services\TmdbApiService;
+use App\Services\MockTmdbService;
+use App\Output\CliOutput;
+
+// Build fetcher: allow using a mock service with `--mock` to run without real API key
+$argvCopy = $argv;
+array_shift($argvCopy); // remove script name
+$useMock = in_array('--mock', $argvCopy, true);
+
+// Verify TMDB API key is set when not using mock
+if (! $useMock) {
+    $apiKey = $_ENV['TMDB_API_KEY'] ?? null;
+    if (empty($apiKey) || $apiKey === 'your_key_here') {
+        fwrite(STDERR, "TMDB API key is missing. Add TMDB_API_KEY to your .env file.\n");
+        exit(1);
+    }
+}
+
+if ($useMock) {
+    $fetcher = new MockTmdbService();
+} else {
+    $fetcher = new TmdbApiService();
+}
+
+$output = new CliOutput();
+$handler = new CliHandler($fetcher, $output);
+
+$args = $argv;
+array_shift($args);
+$handler->handle($args);
