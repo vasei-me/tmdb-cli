@@ -79,6 +79,7 @@ Development / Running without an API key
 You can run without a TMDB API key by using the mock backend:
 
 ```
+<<<<<<< HEAD
 php tmdb-app --mock --type playing
 ```
 
@@ -89,3 +90,9 @@ Notes
 - Cached API responses are stored in the `cache/` directory.
 
 If you want, I can also add a `composer` script to make running easier.
+=======
+
+This is a solution for the TMDB CLI project on roadmap.sh.
+
+**Project URL:** https://roadmap.sh/projects/tmdb-cli
+>>>>>>> 75c166255b83cb6b7518f26de72d2851edb499ca
