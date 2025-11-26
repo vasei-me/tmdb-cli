@@ -54,3 +54,7 @@ tail -f logs/app.log
 # Clear cache
 rm -rf cache/
 ```
+
+This is a solution for the TMDB CLI project on roadmap.sh.
+
+**Project URL:** https://roadmap.sh/projects/tmdb-cli
