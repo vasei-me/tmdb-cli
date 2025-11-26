@@ -16,9 +16,34 @@ class TmdbApiService implements MovieFetcherInterface
 
     public function __construct()
     {
-        $this->config = \config()['tmdb'];
+        // Load configuration directly - removed config() function dependency
+        $cfg = [];
+        $cfgFile = __DIR__ . '/../../config/config.php';
+        if (file_exists($cfgFile)) {
+            $fileCfg = require $cfgFile;
+            if (is_array($fileCfg) && isset($fileCfg['tmdb'])) {
+                $cfg = $fileCfg['tmdb'];
+            }
+        }
+
+        // Allow environment variables to override or provide missing values
+        $envApiKey = $_ENV['TMDB_API_KEY'] ?? getenv('TMDB_API_KEY') ?: null;
+        if ($envApiKey) {
+            $cfg['api_key'] = $envApiKey;
+        }
+
+        // sensible defaults
+        $defaults = [
+            'base_url' => 'https://api.themoviedb.org/3',
+            'language' => 'en-US',
+            'api_key' => $cfg['api_key'] ?? null,
+            'cache_ttl' => $cfg['cache_ttl'] ?? 600,
+        ];
+
+        $this->config = array_merge($defaults, $cfg);
+
         $this->client = new Client([
-            'base_uri' => rtrim($this->config['base_url'], '/') . '/',
+            'base_uri' => rtrim($this->config['base_url'] ?? $defaults['base_url'], '/') . '/',
             'timeout' => 5.0,
             'connect_timeout' => 3.0,
         ]);
@@ -39,8 +64,18 @@ class TmdbApiService implements MovieFetcherInterface
             throw new \InvalidArgumentException("Invalid movie type: {$type}");
         }
 
+        $query = [
+            'api_key' => $this->config['api_key'],
+            'language' => $this->config['language'] ?? 'en-US',
+            'page' => $page,
+        ];
+
+        if (empty($query['api_key'])) {
+            throw new \RuntimeException('TMDB API key is not set. Set TMDB_API_KEY in your environment or use --mock.');
+        }
+
         // Build a cache key from endpoint+query
-        $cacheKey = md5($endpoints[$type] . '|' . $page);
+        $cacheKey = md5($endpoints[$type] . '|' . json_encode($query));
         $cached = $this->cache->get($cacheKey);
         if ($cached !== null) {
             $this->logger->log('debug', "Cache hit for {$endpoints[$type]} page={$page}");
@@ -53,30 +88,11 @@ class TmdbApiService implements MovieFetcherInterface
 
         while ($attempt <= $maxRetries) {
             try {
-                // تشخیص نوع احراز هویت بر اساس نوع کلید
-                $apiKey = $this->config['api_key'];
-                $requestOptions = [
+                $response = $this->client->get($endpoints[$type], [
+                    'query' => $query,
                     'headers' => ['Accept' => 'application/json'],
                     'http_errors' => false,
-                ];
-
-                if (str_starts_with($apiKey, 'eyJ')) {
-                    // استفاده از API Read Access Token (Bearer Token)
-                    $requestOptions['headers']['Authorization'] = 'Bearer ' . $apiKey;
-                    $requestOptions['query'] = [
-                        'language' => $this->config['language'] ?? 'en-US',
-                        'page' => $page,
-                    ];
-                } else {
-                    // استفاده از API Key معمولی
-                    $requestOptions['query'] = [
-                        'api_key' => $apiKey,
-                        'language' => $this->config['language'] ?? 'en-US',
-                        'page' => $page,
-                    ];
-                }
-
-                $response = $this->client->get($endpoints[$type], $requestOptions);
+                ]);
 
                 $status = $response->getStatusCode();
                 $body = $response->getBody()->getContents();

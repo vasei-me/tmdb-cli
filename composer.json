@@ -15,6 +15,12 @@
     "vlucas/phpdotenv": "^5.0",
     "composer/semver": "^3.4"
   },
+  "suggest": {
+    "ext-mbstring": "Provides multibyte string functions used for UTF-8 safe truncation"
+  },
+  "scripts": {
+    "start": "php tmdb-app"
+  },
   "autoload": {
     "psr-4": {
       "App\\": "src/"
