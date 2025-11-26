@@ -29,20 +29,18 @@ composer install
 # Configure environment (add your TMDB API key)
 echo "TMDB_API_KEY=your_api_key_here" > .env
 ```
-
-## 🎯 Usage Examples
-
-```bash
-## 🎬 TMDB CLI - Movie Database Command Line Tool
+# 🎬 TMDB CLI - Movie Database Command Line Tool
 
 A small PHP command-line client for The Movie Database (TMDB) API.
 
-Installation
--------------
+This is a solution for the TMDB CLI project on roadmap.sh.  
+**Project URL:** https://roadmap.sh/projects/tmdb-cli
+
+## Installation
 
 1. Clone the repository and install dependencies:
 
-```
+```bash
 git clone https://github.com/vasei-me/tmdb-cli.git
 cd tmdb-cli
 composer install
@@ -50,17 +48,16 @@ composer install
 
 2. Create a `.env` from the example and add your TMDB API key:
 
-```
+```bash
 copy .env.example .env
 # then edit .env and set TMDB_API_KEY
 ```
 
-Usage
------
+## Usage
 
 Run the CLI (Windows / macOS / Linux):
 
-```
+```bash
 php tmdb-app --type popular
 php tmdb-app --type playing
 php tmdb-app --type top
@@ -69,30 +66,21 @@ php tmdb-app --type upcoming
 
 Pagination:
 
-```
+```bash
 php tmdb-app --type popular --page 2
 ```
 
-Development / Running without an API key
----------------------------------------
+## Development / Running without an API key
 
 You can run without a TMDB API key by using the mock backend:
 
-```
-<<<<<<< HEAD
+```bash
 php tmdb-app --mock --type playing
 ```
 
-Notes
------
+## Notes
 
 - Logs are written to `logs/app.log`.
 - Cached API responses are stored in the `cache/` directory.
 
-If you want, I can also add a `composer` script to make running easier.
-=======
-
-This is a solution for the TMDB CLI project on roadmap.sh.
-
-**Project URL:** https://roadmap.sh/projects/tmdb-cli
 >>>>>>> 75c166255b83cb6b7518f26de72d2851edb499ca
