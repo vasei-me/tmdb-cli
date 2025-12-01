@@ -34,9 +34,6 @@ echo "TMDB_API_KEY=your_api_key_here" > .env
 
 A small PHP command-line client for The Movie Database (TMDB) API.
 
-This is a solution for the TMDB CLI project on roadmap.sh.  
-**Project URL:** https://roadmap.sh/projects/tmdb-cli
-
 ## Installation
 
 1. Clone the repository and install dependencies:
@@ -85,3 +82,6 @@ php tmdb-app --mock --type playing
 - Cached API responses are stored in the `cache/` directory.
 
 >>>>>>> 75c166255b83cb6b7518f26de72d2851edb499ca
+
+This is a solution for the TMDB CLI project on roadmap.sh.  
+**Project URL:** https://roadmap.sh/projects/tmdb-cli
